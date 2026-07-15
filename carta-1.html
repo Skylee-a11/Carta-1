@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            margin: 0; padding: 0; height: 100vh; display: flex; 
+            flex-direction: column; /* Cambiado a columna para apilar texto y sobre */
+            justify-content: center; align-items: center; 
+            background: radial-gradient(circle, #ffe4e6, #fbcfe8);
+            overflow: hidden; font-family: 'Georgia', serif;
+        }
+
+        /* Estilo para el nuevo texto */
+        .texto-click {
+            color: #e91e63;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            animation: parpadeo 2s infinite;
+        }
+        @keyframes parpadeo { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .sobre-container { 
+            cursor: pointer; animation: float 3s ease-in-out infinite; 
+            perspective: 1000px;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        .sobre { width: 220px; height: 150px; background: white; border-radius: 8px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        .solapa { 
+            width: 0; height: 0; border-left: 110px solid transparent; 
+            border-right: 110px solid transparent; border-top: 80px solid #f0f0f0; 
+            position: absolute; top: 0; z-index: 2;
+            transform-origin: top; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; justify-content: center;
+        }
+        
+        .corazon { 
+            margin-top: -45px;
+            font-size: 40px; color: #e91e63;
+            transform: scaleY(0.8); pointer-events: none;
+        }
+
+        .abrir-solapa { transform: rotateX(-180deg); }
+
+        #carta { 
+            display: none; 
+            background: white; padding: 30px; border-radius: 20px; 
+            width: 85%; max-width: 350px; text-align: center; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: absolute;
+            opacity: 0; 
+            transform: translateY(50px);
+            transition: all 1s ease-out;
+            max-height: 80vh; 
+            overflow-y: auto;
+        }
+
+        .show { 
+            display: block !important; 
+            opacity: 1 !important; 
+            transform: translateY(0) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="musica" loop>
+        <source src="https://files.catbox.moe/wyy5ak.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Nuevo texto aquí -->
+    <p class="texto-click">¡Clickea aquí! ↓</p>
+
+    <div class="sobre-container" id="sobre-box" onclick="abrir()">
+        <div class="sobre">
+            <div class="solapa" id="solapa">
+                <div class="corazon">♥</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="carta">
+        <img src="https://files.catbox.moe/p4iask.jpg" style="width: 120px; border-radius: 50%; border: 4px solid #e91e63; margin-bottom: 15px;">
+        
+        <h1 style="color: #e91e63;">Para mi amor</h1>
+        <p style="font-size: 1.1rem; color: #444; line-height: 1.5;">
+            En esta carta diré lo mucho qe te amo, realmente creo qe siempre te guarde un espacio en mi corazón desde qe me terminaste, me enamore de ti de una manera qe realmente ni yo se como pudo ser. Siempre te tuve un pequeño afecto desde la primera vez qe terminamos porqe se qe tu no tuviste la culpa, los dos actuamos de una manera incosedible. 
+            <br><br>
+            En esta pequeña carta te diré qe mi amor por ti es inefable, tan grande qe las palabras y detalles no pueden demostrarlo, haré lo posible por darte un detalle todos los días desde nuestra relación, t amo demasiado.
+        </p>
+        
+        <img src="https://files.catbox.moe/5elwsw.jpg" style="width: 100%; max-width: 250px; margin-top: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        
+        <p style="font-weight: bold; color: #e91e63; margin-top: 20px;">ATT: el novio más pro qe haz tenido 😎🤙🙀🔥</p>
+    </div>
+
+    <script>
+        function abrir() {
+            // Ocultar el texto de ayuda al abrir
+            document.querySelector('.texto-click').style.display = 'none';
+            
+            const audio = document.getElementById('musica');
+            audio.play();
+
+            document.getElementById('solapa').classList.add('abrir-solapa');
+            
+            setTimeout(() => {
+                document.getElementById('sobre-box').style.display = 'none';
+                const carta = document.getElementById('carta');
+                carta.style.display = 'block';
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        carta.classList.add('show');
+                    });
+                });
+            }, 800);
+            
+            if (navigator.vibrate) navigator.vibrate(200);
+        }
+    </script>
+</body>
+</html>
